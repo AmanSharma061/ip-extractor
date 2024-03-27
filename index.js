@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
+import cors from "cors"
 
+app.use(cors());
+app.set('trust proxy',true)
 // Define a route to get the IP address
 app.get('/ip', (req, res) => {
   // Extract the client's IP address
