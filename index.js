@@ -3,15 +3,19 @@ const app = express();
 
 // Define a route to get the IP address
 app.get('/ip', (req, res) => {
-  // Extract the IP address from the request headers
-  let ipAddress = req.ip.replace('::ffff:', ''); // Remove IPv6 prefix
-  if (ipAddress === '::1') {
-    // If IP address is localhost, replace with 127.0.0.1
-    ipAddress = '127.0.0.1';
+  // Extract the client's IP address
+  let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  
+  // If the IP address contains multiple addresses (comma-separated), take the first one
+  if (ipAddress.includes(',')) {
+    ipAddress = ipAddress.split(',')[0];
   }
   
+  // Trim any leading/trailing spaces
+  ipAddress = ipAddress.trim();
+  
   // Send the IP address as the response
-  res.send({ip:ipAddress});
+  res.send(ipAddress);
 });
 
 // Start the server
