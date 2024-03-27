@@ -15,7 +15,7 @@ app.get('/ip', (req, res) => {
   ipAddress = ipAddress.trim();
   
   // Send the IP address as the response
-  res.send(ipAddress);
+  res.send({ip:ipAddress});
 });
 
 // Start the server
